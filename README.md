@@ -34,4 +34,4 @@ https://cwcodechallendge20210801233047.azurewebsites.net
 Due to the time limitation, these are the items remaing in progress
 1. UNIT TESTS! 
 2. Sorting and Pagination
-3. Implementing actual js based frontend. (Currently I am using Ravor View Tag Helper ect to do very simple validation, still covered frontend + backend)
+3. Implementing actual js based frontend. (Currently I am using Razer View Tag Helper to do simple validation, though still covered frontend + backend)
