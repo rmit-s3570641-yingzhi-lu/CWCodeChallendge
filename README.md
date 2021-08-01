@@ -28,7 +28,7 @@ Go to appsettings and specify the Cosmos DB configuration
  ![alt text](https://i.imgur.com/Tb1pYl0.gif)
 
 ## Try by yourself
- ![Web Sidt Url](https://cwcodechallendge20210801233047.azurewebsites.net)
+ ![Web Site Url](https://cwcodechallendge20210801233047.azurewebsites.net)
 
 ## What Lefts
 Due to the time limitation, these are the items remaing in progress
