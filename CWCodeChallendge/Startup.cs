@@ -1,13 +1,13 @@
+using CW.Infrastructure;
+using CW.Infrastructure.Interfaces;
+using CWCodeChallendge.Extensions;
+using CWCodeChallendge.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CWCodeChallendge
 {
@@ -20,13 +20,22 @@ namespace CWCodeChallendge
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            // Bind database options. Invalid configuration will terminate the application startup.
+            var (serviceEndpoint, authKey) = Configuration.GetSection("ConnectionStrings").Get<ConnectionStringOptions>();
+            var cosmosDbOptions = Configuration.GetSection("CosmosDb").Get<CosmosDbOptions>();
+            var (databaseName, collectionData) = cosmosDbOptions;
+            var collectionNames = collectionData.Select(c => c.Name).ToList();
+
+            // Add CosmosDb. This verifies database and collections existence.
+            services.AddCosmosDb(serviceEndpoint, authKey, databaseName, collectionNames);
+
+            services.AddScoped<IProductRepository, ProductRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
