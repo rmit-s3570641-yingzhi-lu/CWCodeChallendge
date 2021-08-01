@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
@@ -17,6 +18,21 @@ namespace CW.Infrastructure
             _databaseName = databaseName ?? throw new ArgumentNullException(nameof(databaseName));
             _collectionName = collectionName ?? throw new ArgumentNullException(nameof(collectionName));
             _documentClient = documentClient ?? throw new ArgumentNullException(nameof(documentClient));
+        }
+
+        public async Task<List<Document>> ListDocumentAsync(FeedOptions options = null, CancellationToken cancellationToken = default)
+        {
+            var feed = await _documentClient.ReadDocumentFeedAsync(
+                        UriFactory.CreateDocumentCollectionUri(_databaseName, _collectionName), options, cancellationToken);
+
+            var docsToReturn = new List<Document>();
+
+            foreach (Document document in feed)
+            {
+                docsToReturn.Add(document);
+            }
+
+            return docsToReturn;
         }
 
         public async Task<Document> ReadDocumentAsync(string documentId, RequestOptions options = null,

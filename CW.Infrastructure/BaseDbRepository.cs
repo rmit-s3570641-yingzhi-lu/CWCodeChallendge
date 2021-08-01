@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using CW.Infrastructure.Exceptions;
@@ -30,6 +31,31 @@ namespace CW.Infrastructure
                 });
 
                 return JsonConvert.DeserializeObject<T>(document.ToString());
+            }
+            catch (DocumentClientException e)
+            {
+                if (e.StatusCode == HttpStatusCode.NotFound)
+                {
+                    throw new EntityNotFoundException();
+                }
+
+                throw;
+            }
+        }
+
+        public async Task<List<T>> ListAsync()
+        {
+            try
+            {
+                var cosmosDbClient = _cosmosDbClientFactory.GetClient(CollectionName);
+                var documents = await cosmosDbClient.ListDocumentAsync();
+                var docsToReturn = new List<T>();
+                documents.ForEach(doc => 
+                {
+                    docsToReturn.Add(JsonConvert.DeserializeObject<T>(doc.ToString()));
+                });
+
+                return docsToReturn;
             }
             catch (DocumentClientException e)
             {
@@ -80,14 +106,14 @@ namespace CW.Infrastructure
             }
         }
 
-        public async Task DeleteAsync(T entity)
+        public async Task DeleteByIdAsync(string id)
         {
             try
             {
                 var cosmosDbClient = _cosmosDbClientFactory.GetClient(CollectionName);
-                await cosmosDbClient.DeleteDocumentAsync(entity.Id, new RequestOptions
+                await cosmosDbClient.DeleteDocumentAsync(id, new RequestOptions
                 {
-                    PartitionKey = ResolvePartitionKey(entity.Id)
+                    PartitionKey = ResolvePartitionKey(id)
                 });
             }
             catch (DocumentClientException e)

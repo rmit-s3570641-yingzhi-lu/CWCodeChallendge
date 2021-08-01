@@ -1,0 +1,45 @@
+﻿@model ProductDto
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>Create Product</h2>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-md-4">
+        <label for="pName" class="form-label">Name</label>
+        <input type="text" class="form-control" id="pName" asp-for=@Model.Name required>
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label for="productType" class="form-label">Type</label>
+        <select class="form-select" id="productType" asp-for="@Model.Type" asp-items="@Html.GetEnumSelectList<CW.Infrastructure.Models.ProductTypes>()">
+        </select>
+        <span class="text-danger" asp-validation-for="Type"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label for="pPrice" class="form-label">Price</label>
+        <input type="number" class="form-control" asp-for=@Model.Price aria-label="Product Price" aria-describedby="basic-addon1">
+        <span class="text-danger" asp-validation-for="Price"></span>
+    </div>
+
+    <div class="form-check form-switch mt-3 mb-3">
+        <input class="form-check-input" asp-for=@Model.IsActive>
+        <label class="form-check-label">Active Product</label>
+        <span asp-validation-for="IsActive" class="text-danger" />
+    </div>
+
+    <div class="input-group mb-3 mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

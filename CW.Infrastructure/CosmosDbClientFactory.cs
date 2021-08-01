@@ -35,9 +35,15 @@ namespace CW.Infrastructure
 
             foreach (var collectionName in _collectionNames)
             {
+                DocumentCollection collectionDefinition = new DocumentCollection
+                {
+                    Id = collectionName
+                };
+
+                collectionDefinition.PartitionKey.Paths.Add("/id");
+
                 await _documentClient.CreateDocumentCollectionIfNotExistsAsync(
-                        UriFactory.CreateDatabaseUri(_databaseName),
-                        new DocumentCollection { Id = collectionName });
+                        UriFactory.CreateDatabaseUri(_databaseName), collectionDefinition);
             }
         }
     }
