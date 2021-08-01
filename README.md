@@ -1,8 +1,8 @@
-##Frontend
-Bootstrap
-ASP.NET MVC Razer View
+## Frontend
+Bootstrap v5
+ASP.NET MVC Razer View (.NET Core 3.1)
 
-##Backend
+## Backend
 Integrated Cosmos DB using Factory and Repository Pattern
 
 ## How to Run
@@ -28,7 +28,7 @@ Go to appsettings and specify the Cosmos DB configuration
  ![alt text](https://i.imgur.com/Tb1pYl0.gif)
 
 ## Try by yourself
-![Web Link](https://cwcodechallendge20210801233047.azurewebsites.net)
+ ![Web Sidt Url](https://cwcodechallendge20210801233047.azurewebsites.net)
 
 ## What Lefts
 Due to the time limitation, these are the items remaing in progress
